@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import rospy
-from smach import State, StataMachine
+from smach import State, StateMachine
+
 
 class InitialState(State):
     def __init__(self, **kwargs):
@@ -11,6 +12,7 @@ class InitialState(State):
         pass
         return 'success'
 
+
 class BeforeGrasp(State):
     def __init__(self, **kwargs):
         State.__init__(self, outcomes=['success', 'failed'])
@@ -18,6 +20,7 @@ class BeforeGrasp(State):
     def execute(self, userdate):
         pass
         return 'success'
+
 
 class AfterGrasp(State):
     def __init__(self, **kwargs):
@@ -27,6 +30,7 @@ class AfterGrasp(State):
         pass
         return 'success'
 
+
 class BeforeAssemble(State):
     def __init__(self, **kwargs):
         State.__init__(self, outcomes=['success', 'failed'])
@@ -34,6 +38,7 @@ class BeforeAssemble(State):
     def execute(self, userdate):
         pass
         return 'success'
+
 
 class AfterAssemble(State):
     def __init__(self, **kwargs):
@@ -51,5 +56,3 @@ class FinalState(State):
     def execute(self, userdate):
         pass
         return 'success'
-
-
