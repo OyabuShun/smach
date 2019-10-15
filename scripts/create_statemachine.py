@@ -7,7 +7,7 @@ from test_state import *
 from state_machine.msg import StateMachine_msgs
 
 flag = True
-statemachine = StateMachine(outcomes=['success', 'failed'])
+sm = StateMachine(outcomes=['success', 'failed'])
 
 
 def tuples_to_dict(keys, values):
@@ -19,12 +19,12 @@ def tuples_to_dict(keys, values):
 
 def callback(message):
     global flag
-    global statemachine
+    global sm
     if flag:
         kwargs = {}
         if message.keywords:
             kwargs = tuples_to_dict(message.keywords, message.args)
-        with statemachine:
+        with sm:
             StateMachine.add(
                 message.id,
                 globals()[
@@ -36,7 +36,7 @@ def callback(message):
         if message.is_end is True:
             flag = False
             while True:
-                status = statemachine.execute()
+                status = sm.execute()
                 if status == 'success':
                     print('===SUCCESS!===')
                     print('===RESTART STATE MACHINE===')
@@ -48,6 +48,6 @@ def callback(message):
 if __name__ == '__main__':
     rospy.init_node('create_statemachine')
     sub = rospy.Subscriber('state', StateMachine_msgs, callback)
-    sis = IntrospectionServer('server_name', statemachine, '/SM_ROOT')
+    sis = IntrospectionServer('server_name', sm, '/SM_ROOT')
     sis.start()
     rospy.spin()
