@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(smach_tutorials)
+project(smach_tutorial2)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,10 +8,7 @@ project(smach_tutorials)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
   rospy
-  std_msgs
-  message_generation
   smach
   smach_ros
 )
@@ -70,10 +67,9 @@ catkin_python_setup()
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-   DEPENDENCIES
-   std_msgs
-)
+#generate_messages(
+#   DEPENDENCIES
+#)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -186,6 +182,14 @@ include_directories(
 #   # myfile2
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
+
+set(PYTHON_SCRIPTS
+  scripts/user_data2.py
+  scripts/hierarchical_state_machine.py)
+foreach(scripts ${PYTHON_SCRIPTS})
+  catkin_install_python(PROGRAMS ${scripts}
+    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+endforeach()
 
 #############
 ## Testing ##

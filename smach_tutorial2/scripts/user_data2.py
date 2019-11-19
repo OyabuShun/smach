@@ -7,6 +7,8 @@ from smach_ros import IntrospectionServer
 from time import sleep
 
 # define state Foo
+
+
 class Foo(State):
     def __init__(self):
         State.__init__(self, outcomes=['outcome1', 'outcome2'], input_keys=[
