@@ -1,19 +1,18 @@
 #!/usr/bin/env python
 
 import rospy
-from smach import State, StateMachine
+from smach import State, StateMachine, Concurrence
 from smach_ros import IntrospectionServer
 from time import sleep
 
 
-# define state Foo
 class Foo(State):
     def __init__(self):
         State.__init__(self, outcomes=['outcome1', 'outcome2'])
         self.counter = 0
 
     def execute(self, userdata):
-        rospy.loginfo('Executing state Foo')
+        rospy.loginfo('Executing state FOO')
         if self.counter < 3:
             self.counter += 1
             sleep(1)
@@ -23,7 +22,6 @@ class Foo(State):
             return 'outcome2'
 
 
-# define state Bar
 class Bar(State):
     def __init__(self):
         State.__init__(self, outcomes=['outcome1'])
@@ -34,7 +32,6 @@ class Bar(State):
         return 'outcome1'
 
 
-# define state Bas
 class Bas(State):
     def __init__(self):
         State.__init__(self, outcomes=['outcome3'])
@@ -46,36 +43,46 @@ class Bas(State):
 
 
 def main():
-    rospy.init_node('smach_example_hierarchical_state_machine')
+    rospy.init_node('smach_example_state_machine')
 
     # Create the top level SMACH state machine
-    sm_top = StateMachine(outcomes=['outcome5'])
+    sm_top = StateMachine(outcomes=['outcome6'])
 
-    # Open the container
+    # Open the countainer
     with sm_top:
-        StateMachine.add('BAS', Bas(), transitions={'outcome3': 'SUB'})
+        StateMachine.add('BAS', Bas(), transitions={'outcome3': 'CON'})
 
         # Create the sub SMACH state machine
-        sm_sub = StateMachine(outcomes=['outcome4'])
+        sm_con = Concurrence(
+            outcomes=[
+                'outcome4',
+                'outcome5'],
+            default_outcome='outcome4',
+            outcome_map={
+                'outcome5': {
+                    'FOO': 'outcome2',
+                    'BAR': 'outcome1'}})
 
-        # Open the container
-        with sm_sub:
+        # Open the countainer
+        with sm_con:
 
-            # Add state to the container
-            StateMachine.add(
-                'FOO',
-                Foo(),
-                transitions={
-                    'outcome1': 'BAR',
-                    'outcome2': 'outcome4'})
-            StateMachine.add('BAR', Bar(), transitions={'outcome1': 'FOO'})
-        StateMachine.add('SUB', sm_sub, transitions={'outcome4': 'outcome5'})
+            # Add states to the container
+            Concurrence.add('FOO', Foo())
+            Concurrence.add('BAR', Bar())
 
-    sis = IntrospectionServer('example', sm_top, '/SM_STATEMACHINE')
+        StateMachine.add(
+            'CON',
+            sm_con,
+            transitions={
+                'outcome4': 'CON',
+                'outcome5': 'outcome6'})
+
+    sis = IntrospectionServer('example', sm_top, '/SM_PATH')
     sis.start()
 
     # Execute SMACH plan
     outcome = sm_top.execute()
+
     rospy.spin()
     sis.stop()
 
