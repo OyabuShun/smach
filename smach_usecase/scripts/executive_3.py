@@ -3,7 +3,8 @@
 import rospy
 from smach import State, StateMachine
 from smach_ros import IntrospectionServer, ServiceState
-from smach_usecase_srv.srv import Reset, ResetRequest
+from std_srvs.srv import Empty, EmptyRequest
+from turtlesim.srv import Spawn, SpawnRequest
 
 
 def main():
@@ -16,15 +17,15 @@ def main():
             'RESET',
             ServiceState(
                 'service_name',
-                Reset,
-                request=ResetRequest),
+                Empty,
+                request=EmptyRequest),
             transitions={
                 'succeeded': 'SPAWN'})
         StateMachine.add(
             'SPAWN',
             ServiceState(
                 'service_name',
-                turtlesim.srv,
+                Spawn,
                 request=SpawnRequest),
             transitions={
                 'preemtped': 'preemtped',
