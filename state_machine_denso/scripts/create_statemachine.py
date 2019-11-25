@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+
 import os
 import rospy
 from smach import State, StateMachine
 from smach_ros import IntrospectionServer
 from test_state import *
-from state_machine.msg import StateMachine_msgs
+from state_machine_denso.msg import StateMachine_msgs
 
 flag = True
 sm = StateMachine(outcomes=['success', 'failed'])

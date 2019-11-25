@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from state_machine.msg import StateMachine_msgs
+from state_machine_denso.msg import StateMachine_msgs
 from time import sleep
 
 rospy.init_node('pub_param')
