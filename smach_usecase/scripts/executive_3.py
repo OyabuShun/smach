@@ -5,6 +5,25 @@ from smach import State, StateMachine
 from smach_ros import IntrospectionServer, ServiceState
 from std_srvs.srv import Empty, EmptyRequest
 from turtlesim.srv import Spawn, SpawnRequest
+from time import sleep
+
+class Reset(State):
+    def __init__(self):
+        State.__init__(self, outcomes=['succeeded'])
+
+    def execute(self, userdata):
+        sleep(1)
+        rospy.loginfo('Executing State Reset')
+        return 'succeeded'
+
+class Spawn(State):
+    def __init__(self):
+        State.__init__(self, outcomes=['preemtped', aborted, 'succeeded'])
+
+    def execute(self, userdata):
+        sleep(1)
+        print('Execuing State Spawn')
+        return 'aborted'
 
 
 def main():
@@ -16,23 +35,26 @@ def main():
         StateMachine.add(
             'RESET',
             ServiceState(
-                'service_name',
+                '/reset',
                 Empty,
-                request=EmptyRequest),
+                request=EmptyRequest()),
             transitions={
                 'succeeded': 'SPAWN'})
         StateMachine.add(
             'SPAWN',
             ServiceState(
-                'service_name',
-                Spawn,
-                request=SpawnRequest),
-            transitions={
-                'preemtped': 'preemtped',
-                'aborted': 'aborted',
-                'succeeded': 'succeeded'})
+                '/spawn',
+                Empty,
+                request=EmptyRequest()),
+                #request=SpawnRequest(1.0, 1.0, 2.0, 'kkk')),
+                transitions={'aborted': 'aborted'})
+#            transitions={
+#                'preemtped': 'preemtped',
+#                'aborted': 'aborted',
+#                'succeeded': 'succeeded'})
 
     sis = IntrospectionServer('exmaple', sm_root, '/USE_CASE')
+    sis.start()
 
     outcome = sm_root.execute()
 
