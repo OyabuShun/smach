@@ -42,7 +42,7 @@ class BeforeGrasp(State):
     def execute(self, userdata):
         print('InitialState')
         sleep(self.sleeptime)
-        if random() > 0.6:
+        if random() > 0.1:
             print('sucessssss')
             sleep(1)
             return 'success'

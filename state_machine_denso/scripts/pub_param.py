@@ -9,7 +9,7 @@ pub = rospy.Publisher('state', StateMachine_msgs, queue_size=10)
 sleep(1)
 
 msg = StateMachine_msgs()
-msg.id = 'InitialState'
+msg.id = 'InitialState1'
 msg.statename = 'InitialState'
 msg.src = ['success', 'failed']
 msg.dst = ['BeforeGrasp', 'failed']
