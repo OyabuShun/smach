@@ -40,7 +40,7 @@ class BeforeGrasp(State):
         State.__init__(self, outcomes=['success', 'failed'])
 
     def execute(self, userdata):
-        print('InitialState')
+        print('BeforeGrasp')
         sleep(self.sleeptime)
         if random() > 0.1:
             print('sucessssss')
@@ -61,7 +61,7 @@ class AfterGrasp(State):
         State.__init__(self, outcomes=['success', 'failed'])
 
     def execute(self, userdata):
-        print('InitialState')
+        print('AfterGrasp')
         sleep(self.sleeptime)
         if random() > 0.6:
             print('sucessssss')
@@ -82,7 +82,7 @@ class BeforeAssemble(State):
         State.__init__(self, outcomes=['success', 'failed'])
 
     def execute(self, userdata):
-        print('InitialState')
+        print('BeforeAssemble')
         sleep(self.sleeptime)
         if random() > 0.6:
             print('sucessssss')
@@ -103,7 +103,7 @@ class AfterAssemble(State):
         State.__init__(self, outcomes=['success', 'failed'])
 
     def execute(self, userdata):
-        print('InitialState')
+        print('AfterAssemble')
         sleep(self.sleeptime)
         if random() > 0.6:
             print('sucessssss')
@@ -124,7 +124,7 @@ class FinalState(State):
         State.__init__(self, outcomes=['success', 'failed'])
 
     def execute(self, userdata):
-        print('InitialState')
+        print('FinalState')
         sleep(self.sleeptime)
         if random() > 0.6:
             print('sucessssss')
