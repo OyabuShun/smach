@@ -47,7 +47,7 @@ def callback(message):
 
 if __name__ == '__main__':
     rospy.init_node('create_statemachine')
-    sub = rospy.Subscriber('/state_data', StateMachine_msgs, callback)
+    sub = rospy.Subscriber('/state_data', StateMachine_msgs2, callback)
     sis = IntrospectionServer('server_name', sm, '/SM_ROOT')
     sis.start()
     rospy.spin()
