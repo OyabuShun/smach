@@ -5,11 +5,12 @@ from state_machine_denso.msg import StateMachine_msgs
 from time import sleep
 
 rospy.init_node('pub_param')
-pub = rospy.Publisher('state', StateMachine_msgs, queue_size=10)
+pub = rospy.Publisher('/state_data', StateMachine_msgs, queue_size=10)
+
 sleep(1)
 
 msg = StateMachine_msgs()
-msg.id = 'InitialState1'
+msg.id = 'InitialState'
 msg.statename = 'InitialState'
 msg.src = ['success', 'failed']
 msg.dst = ['BeforeGrasp', 'failed']
