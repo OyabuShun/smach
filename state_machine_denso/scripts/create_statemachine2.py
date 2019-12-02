@@ -4,8 +4,11 @@ import os
 import rospy
 from smach import State, StateMachine
 from smach_ros import IntrospectionServer
-from test_state import *
-from state_machine_denso.msg import StateMachine_msgs2
+from geometry_msgs.msg import PoseStamped
+from denso_state_smach import *
+#from test_state import *
+#from state_machine_denso.msg import StateMachine_msgs2
+from denso_state_msgs.msg import StateMachine_msgs2
 
 flag = True
 sm = StateMachine(outcomes=['success', 'failed'])
@@ -22,14 +25,21 @@ def callback(message):
     global flag
     global sm
     if flag:
-        kwargs = {}
+        kwargs = PoseStamped()
+        if message.statename == 'InitialState':
+            kwargs.pose = message.grasp1
+        elif message.statename == 'AfterGrasp':
+            kwargs.pose = message.assemble1
+        print(kwargs)
         if message.keywords:
-            kwargs = tuples_to_dict(message.keywords, message.args)
+            pass
+#            kwargs = tuples_to_dict(message.keywords, message.arg)
+#            kwargs.pose = message.grasp1
         with sm:
             StateMachine.add(
                 message.id,
                 globals()[
-                    message.statename](**kwargs),
+                    message.statename](kwargs),
                 transitions=tuples_to_dict(
                     message.src,
                     message.dst))

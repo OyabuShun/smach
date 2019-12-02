@@ -5,3 +5,5 @@ string[] dst
 string[] keywords
 string[] args
 bool is_end
+geometry_msgs/Pose grasp1
+geometry_msgs/Pose assemble1

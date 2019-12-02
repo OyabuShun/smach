@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import rospy
-from state_machine_denso.srv import WorkPointSrv, WorkPointSrvResponse
+#from state_machine_denso.srv import WorkPointSrv, WorkPointSrvResponse
+from denso_state_srvs.srv import WorkPointSrv, WorkPointSrvResponse
 
 
 def handle_service(req):
