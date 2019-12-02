@@ -14,7 +14,7 @@ class Publisher(object):
 
     def publisher_state_data(self):
         response = self.state_data_service()
-        state_data = StateMachine_msgs2()
+        state_data_pub = StateMachine_msgs2()
 
         for i, name in enumerate(response.state):
             if response.state[i] == '100':
@@ -24,11 +24,14 @@ class Publisher(object):
             elif response.state[i] == '300':
                 response.state[i] = 'AfterGrasp'
 
-        state_data.state = response.state
-        print(state_data.state)
+        state_data_pub.state = response.state
+        print(state_data_pub)
+        sleep(5)
+        self.state_data.publish(state_data_pub)
+        print('published')
 
 if __name__ == '__main__':
-    rospy.init_node("state_date")
+    rospy.init_node("state_data")
     publish = Publisher()
     publish.publisher_state_data()
     rospy.spin()
