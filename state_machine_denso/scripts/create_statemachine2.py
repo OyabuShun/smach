@@ -26,13 +26,13 @@ def callback(message):
     global sm
     if flag:
         kwargs = PoseStamped()
-        if message.statename == 'InitialState':
-            kwargs.pose = message.grasp1
-        elif message.statename == 'AfterGrasp':
-            kwargs.pose = message.assemble1
-        print(kwargs)
-        if message.keywords:
-            pass
+        kwargs.pose = message.workpoint
+#        if message.statename == 'InitialState':
+#            kwargs.pose = message.workpoint
+#        elif message.statename == 'AfterGrasp':
+#            kwargs.pose = message.workpoint
+#        if message.keywords:
+#            pass
 #            kwargs = tuples_to_dict(message.keywords, message.arg)
 #            kwargs.pose = message.grasp1
         with sm:
@@ -50,6 +50,7 @@ def callback(message):
                 if status == 'success':
                     print('===SUCCESS!===')
                     print('===RESTART STATE MACHINE===')
+                    os._exit(1)
                 else:
                     print('###FAILED...###')
                     os._exit(1)
