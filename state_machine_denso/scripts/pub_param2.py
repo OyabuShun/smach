@@ -12,17 +12,18 @@ from time import sleep
 class Publisher(object):
     def __init__(self):
         rospy.wait_for_service('/state_data_service')
-        #rospy.wait_for_service('/test')
-        self.state_data_service = rospy.ServiceProxy('/state_data_service', WorkPointSrv)
+        # rospy.wait_for_service('/test')
+        self.state_data_service = rospy.ServiceProxy(
+            '/state_data_service', WorkPointSrv)
         #self.state_data_service = rospy.ServiceProxy('/test', WorkPointServiceProvider)
-        self.state_data = rospy.Publisher('/state_data', StateMachine_msgs2, queue_size=10)
+        self.state_data = rospy.Publisher(
+            '/state_data', StateMachine_msgs2, queue_size=10)
 
     def publisher_state_data(self):
         response = self.state_data_service()
         state_data_pub = StateMachine_msgs2()
 
         print(response)
-
 
         state_data_pub.src = ['success', 'failed']
         state_data_pub.is_end = False
@@ -31,7 +32,7 @@ class Publisher(object):
         print(response.assemble)
         for i, name in enumerate(response.state):
             if response.state[i] == '100':
-#                response.state[i] = 'InitialState'
+                #                response.state[i] = 'InitialState'
                 state_data_pub.statename = 'InitialState'
                 state_data_pub.id = 'InitialState'
                 state_data_pub.dst = ['BeforeGrasp', 'failed']
@@ -39,14 +40,14 @@ class Publisher(object):
                 sleep(3)
                 self.state_data.publish(state_data_pub)
             elif response.state[i] == '200':
-#                response.state[i] = 'BeforeGrasp'
+                #                response.state[i] = 'BeforeGrasp'
                 state_data_pub.statename = 'BeforeGrasp'
                 state_data_pub.id = 'BeforeGrasp'
                 state_data_pub.dst = ['AfterGrasp', 'failed']
                 sleep(3)
                 self.state_data.publish(state_data_pub)
             elif response.state[i] == '300':
-#                response.state[i] = 'AfterGrasp'
+                #                response.state[i] = 'AfterGrasp'
                 state_data_pub.statename = 'AfterGrasp'
                 state_data_pub.id = 'AfterGrasp'
                 state_data_pub.dst = ['BeforeAssemble', 'failed']

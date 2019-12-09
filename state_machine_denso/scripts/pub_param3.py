@@ -29,7 +29,7 @@ def handle_service(req):
     res.assemble.position.z = 0.3
     res.assemble.orientation.x = 1.0
 
-    #res.grasp.append(a)
+    # res.grasp.append(a)
 
     print(res)
     return res
