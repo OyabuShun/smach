@@ -31,14 +31,17 @@ class Publisher(object):
         print(response.grasp)
         print(response.assemble)
         for i, name in enumerate(response.state):
+
             if response.state[i] == '100':
                 #                response.state[i] = 'InitialState'
                 state_data_pub.statename = 'InitialState'
                 state_data_pub.id = 'InitialState'
-                state_data_pub.dst = ['BeforeGrasp', 'failed']
+                state_data_pub.dst = ['SUB', 'failed']
+                #state_data_pub.dst = ['BeforeGrasp', 'failed']
                 state_data_pub.workpoint = response.grasp
                 sleep(3)
                 self.state_data.publish(state_data_pub)
+
             elif response.state[i] == '200':
                 #                response.state[i] = 'BeforeGrasp'
                 state_data_pub.statename = 'BeforeGrasp'
@@ -46,6 +49,7 @@ class Publisher(object):
                 state_data_pub.dst = ['AfterGrasp', 'failed']
                 sleep(3)
                 self.state_data.publish(state_data_pub)
+
             elif response.state[i] == '300':
                 #                response.state[i] = 'AfterGrasp'
                 state_data_pub.statename = 'AfterGrasp'
@@ -54,19 +58,19 @@ class Publisher(object):
                 state_data_pub.workpoint = response.assemble
                 sleep(3)
                 self.state_data.publish(state_data_pub)
+
             elif response.state[i] == '400':
                 state_data_pub.statename = 'BeforeAssemble'
                 state_data_pub.id = 'BeforeAssemble'
                 state_data_pub.dst = ['AfterAssemble', 'failed']
-                state_data_pub.is_end = False
                 state_data_pub.workpoint = response.assemble
                 sleep(3)
                 self.state_data.publish(state_data_pub)
+
             elif response.state[i] == '500':
                 state_data_pub.statename = 'AfterAssemble'
                 state_data_pub.id = 'AfterAssemble'
                 state_data_pub.dst = ['FinalState', 'failed']
-                state_data_pub.is_end = False
                 sleep(3)
                 self.state_data.publish(state_data_pub)
             elif response.state[i] == '600':
@@ -76,6 +80,7 @@ class Publisher(object):
                 state_data_pub.is_end = True
                 sleep(3)
                 self.state_data.publish(state_data_pub)
+
             """
             elif response.state[i] == '700':
                 state_data_pub.statename = 'InitialState'
